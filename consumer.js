@@ -38,9 +38,14 @@ mqttClient.on("connect", async () => {
 		mqttClient.on("message", async (topic, message) => {
 			console.log("Received a message on topic", topic);
 
+			let measurementName = topic.replace(/\//g, "_");
+			if (measurementName.endsWith("_")) {
+				measurementName = measurementName.slice(0, -1);
+			}
+
 			// decode message buffer to json
-			const data = Object.assign(message.toJSON(), {
-				measurement: topic.replace(/\//g, "_")
+			const data = Object.assign(JSON.parse(message.toString()), {
+				measurement: measurementName
 			});
 
 			await influxDb.writePoints([data]);
