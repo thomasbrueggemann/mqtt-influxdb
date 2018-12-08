@@ -5,7 +5,9 @@
 
 The MQTT InfluxDB ingester can be run via Docker. The docker image is hosted on Docker Hub:
 
-https://hub.docker.com/r/brueggemannthomas/mqtt-influxdb/
+<a target="_blank" href="https://hub.docker.com/r/brueggemannthomas/mqtt-influxdb/">hub.docker.com/r/brueggemannthomas/mqtt-influxdb</a>
+
+### Environment Variables
 
 The Docker container uses the following environment variables to be configured:
 
