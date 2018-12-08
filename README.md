@@ -1,6 +1,36 @@
 <h1 align="center">MQTT 🚠 InfluxDB</h1>
 <p align="center">MQTT consumer that ingests directly into InfluxDB</p>
 
+## Data schema
+
+This MQTT to InfluxDB forwarder work in a way, that you publish JSON data on topics.
+The topics that you use must follow a common prefix, that your specify with the `MQTT_TOPIC_PREFIX` environment variable.
+The MQTT will be used as the InfluxDB measurement name within the database specified in `INFLUXDB_DATABASE`.
+You must adhere to the following JSON format.
+
+### JSON message schema
+
+| Key       | Value                                                                                                                                           |
+| --------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| timestamp | A microseconds timestamp                                                                                                                        |
+| tags      | Specify <a href="https://docs.influxdata.com/influxdb/v1.7/concepts/glossary/#tag">InfluxDB tags</a> as a JSON object. Tags are indexed fields. |
+| fields    | Specify <a href="https://docs.influxdata.com/influxdb/v1.7/concepts/glossary/#field">InfluxDB fields</a> as a JSON object.                      |
+
+### Example JSON message:
+
+```
+{
+	timestamp: 1544292348745,
+	tags: { device: "car4" },
+	fields: {
+		latitude: 50.1234223,
+		longitude: 7.34543,
+		altitude: 323,
+		velocity: 342
+	}
+}
+```
+
 ## Run via Docker
 
 The MQTT InfluxDB ingester can be run via Docker. The docker image is hosted on Docker Hub:

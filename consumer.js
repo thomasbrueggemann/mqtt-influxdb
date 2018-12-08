@@ -24,11 +24,13 @@ mqttClient.on("connect", async () => {
 	console.log("Connected to MQTT broker");
 
 	try {
+		// make sure the topic name has a trailing slash
 		let topic = process.env.MQTT_TOPIC_PREFIX;
 		if (!topic.endsWith("/")) {
 			topic += "/";
 		}
 
+		// subscripe the a channel with a quality of service attribute of 2 = "exactly once"
 		await mqttClient.subscribe(`${topic}#`, {
 			qos: 2
 		});
@@ -37,35 +39,15 @@ mqttClient.on("connect", async () => {
 			console.log("Received a message on topic", topic);
 
 			// decode message buffer to json
-			const data = message.toJSON();
+			const data = Object.assign(message.toJSON(), {
+				measurement: topic.replace(/\//g, "_")
+			});
 
-			await influxDb.writePoints([
-				{
-					measurement: topic.replace(/\//g, "_"),
-					timestamp: new Date(telemetry.timestamp * 1000),
-					tags: { id: telemetry.id, visibility: telemetry.visibility },
-					fields: {
-						latitude: telemetry.latitude,
-						longitude: telemetry.longitude,
-						altitude: telemetry.altitude,
-						velocity: telemetry.velocity,
-						footprint: telemetry.footprint,
-						daynum: telemetry.daynum,
-						solar_lat: telemetry.solar_lat,
-						solar_lon: telemetry.solar_lon
-					}
-				}
-			]);
+			await influxDb.writePoints([data]);
 		});
 	} catch (e) {
-		// Do something about it!
+		// log error and end process
 		console.log(e.stack);
 		process.exit();
 	}
-});
-
-process.on("SIGINT", async () => {
-	await mqttClient.end();
-
-	process.exit();
 });
