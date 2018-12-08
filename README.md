@@ -1,4 +1,4 @@
-<h1 align="center">🚠  MQTT → InfluxDB</h1>
+<h1 align="center">MQTT 🚠 InfluxDB</h1>
 <p align="center">MQTT consumer that ingests directly into InfluxDB</p>
 
 ## Run via Docker
