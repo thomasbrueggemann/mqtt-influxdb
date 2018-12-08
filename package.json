@@ -1,0 +1,39 @@
+{
+	"name": "mqtt-influxdb",
+	"version": "1.0.0",
+	"description": "MQTT consumer that ingests directly into InfluxDB",
+	"main": "consumer.js",
+	"scripts": {
+		"start": "node consumer"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/thomasbrueggemann/mqtt-influxdb.git"
+	},
+	"keywords": [
+		"mqtt",
+		"influxdb",
+		"timeseries",
+		"telemetry",
+		"message",
+		"queue",
+		"queue",
+		"iot"
+	],
+	"author": "Thomas Brüggemann",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/thomasbrueggemann/mqtt-influxdb/issues"
+	},
+	"homepage": "https://github.com/thomasbrueggemann/mqtt-influxdb#readme",
+	"dependencies": {
+		"async-mqtt": "^2.0.0",
+		"influx": "^5.0.7"
+	},
+	"prettier": {
+		"printWidth": 100,
+		"useTabs": true,
+		"tabWidth": 4,
+		"arrowParens": "always"
+	}
+}
