@@ -36,7 +36,8 @@ mqttClient.on("connect", async () => {
 		});
 
 		mqttClient.on("message", async (topic, message) => {
-			console.log("Received a message on topic", topic);
+			//console.log("Received a message on topic", topic);
+			console.log(topic, message);
 
 			let measurementName = topic.replace(/\//g, "_");
 			if (measurementName.endsWith("_")) {
