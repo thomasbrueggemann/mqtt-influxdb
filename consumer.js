@@ -44,12 +44,29 @@ mqttClient.on("connect", async () => {
 				measurementName = measurementName.slice(0, -1);
 			}
 
-			// decode message buffer to json
-			const data = Object.assign(JSON.parse(message.toString()), {
-				measurement: measurementName
-			});
+			const json = JSON.parse(message.toString());
+			let data;
 
-			await influxDb.writePoints([data]);
+			// check if the transmitted object is a json
+			if (typeof json === "object") {
+				// decode message buffer to json
+				data = Object.assign(json, {
+					measurement: measurementName
+				});
+			} else {
+				data = {
+					measurement: measurementName,
+					timestamp: Date.now(),
+					fields: {
+						value: json
+					}
+				};
+			}
+
+			// only publish if data was available
+			if (data) {
+				await influxDb.writePoints([data]);
+			}
 		});
 	} catch (e) {
 		// log error and end process
