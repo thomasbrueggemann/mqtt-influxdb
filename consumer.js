@@ -56,7 +56,6 @@ mqttClient.on("connect", async () => {
 			} else {
 				data = {
 					measurement: measurementName,
-					timestamp: Date.now(),
 					fields: {
 						value: json
 					}
